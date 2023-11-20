@@ -17,6 +17,7 @@ connection = mysql.connector.connect(host='', database='', user='', password='')
 
 
 
+
 @app.route('/sso/login/<ssoToken>')
 def ssoLogin(ssoToken):
     print('SSO token: ' + ssoToken)
@@ -44,16 +45,19 @@ def index():
 async def helloMessage():
     if 'ssoToken' in session:
         if request.method == 'POST':
-            message = request.form['message']
+            message = request.form['message']  # Key is 'message'
             guildID = session['guildID']
             insertMessage = "INSERT INTO config (guildID, helloMessage) VALUES (%s, %s) ON DUPLICATE KEY UPDATE helloMessage = %s"
             cursor = connection.cursor()
             cursor.execute(insertMessage, (guildID, message, message))
             connection.commit()
             cursor.close()
+            return 'Message updated successfully.'
+        else:
+            return 'Invalid request method.'
     else:
         return 'You are not logged in.'
-    
+
 
 if __name__ == '__main__':
     app.run(host='localhost', port=8800, debug=True)

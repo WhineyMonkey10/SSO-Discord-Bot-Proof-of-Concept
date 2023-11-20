@@ -15,6 +15,7 @@ token = os.getenv('TOKEN')
 
 connection = mysql.connector.connect(host='', database='', user='', password='')
 
+
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 
