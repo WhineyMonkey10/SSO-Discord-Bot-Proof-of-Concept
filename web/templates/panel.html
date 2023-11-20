@@ -6,9 +6,25 @@
     <title>Panel</title>
 </head>
 <body>
-    <form action="sendMessage()" method="post">
-        <input type="text" name="message" id="message">
-        <input type="submit" value="Send">
+    <form id="newHelloMessage" onsubmit="return false;">
+        <input type="text" name="helloMessage" id="helloMessage" placeholder="Hello message">
+        <input type="submit" value="Submit">
     </form>
+    <script>
+        document.getElementById('newHelloMessage').onsubmit = function(event) {
+            event.preventDefault();
+            var newhelloMessage = document.getElementById('helloMessage').value;
+            fetch('/newHelloMSG', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'msg=' + encodeURIComponent(newhelloMessage)
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
 </body>
 </html>
